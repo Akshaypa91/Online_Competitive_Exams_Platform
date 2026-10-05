@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 require('dotenv').config();
-const errorMiddleware = require('../../../temp/src/middleware/errorMiddleware');
-const pool = require('../../../temp/src/config/db');
+const errorMiddleware = require('./middleware/errorMiddleware');
+const pool = require('./config/db');
 
 const app = express();
 
@@ -14,16 +14,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/auth', require('../../../temp/src/routes/authRoutes'));
-app.use('/api/topics', require('../../../temp/src/routes/topicRoutes'));
-app.use('/api/exams', require('../../../temp/src/routes/examRoutes'));
-app.use('/api/questions', require('../../../temp/src/routes/questionRoutes'));
-app.use('/api/student', require('../../../temp/src/routes/studentRoutes'));
-app.use('/api/student/attempts', require('../../../temp/src/routes/attemptRoutes'));
-app.use('/api/student/attempts', require('../../../temp/src/routes/answerRoutes'));
-app.use('/api/results', require('../../../temp/src/routes/resultRoutes'));
-app.use('/api/ranking', require('../../../temp/src/routes/rankingRoutes'));
-app.use('/api/admin', require('../../../temp/src/routes/adminRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/topics', require('./routes/topicRoutes'));
+app.use('/api/exams', require('./routes/examRoutes'));
+app.use('/api/questions', require('./routes/questionRoutes'));
+app.use('/api/student', require('./routes/studentRoutes'));
+app.use('/api/student/attempts', require('./routes/attemptRoutes'));
+app.use('/api/student/attempts', require('./routes/answerRoutes'));
+app.use('/api/results', require('./routes/resultRoutes'));
+app.use('/api/ranking', require('./routes/rankingRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Health check endpoint
 app.get('/api/health', async (req, res, next) => {
