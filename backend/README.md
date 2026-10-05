@@ -1,7 +1,7 @@
 # Online Competitive Examination System - Backend API
 
 This project provides a complete REST API backend for an Online Competitive Examination System, built using Node.js, Express.js, and MySQL.
-
+ 
 ## Features
 - Role-based authentication (Admin and Student) using JWT.
 - Exam management (CRUD operations on topics, exams, questions, and options).
