@@ -5,5 +5,4 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.get('/exams', authMiddleware, studentController.getAvailableExams);
 router.post('/exams/:examId/start', authMiddleware, studentController.startExam);
-
 module.exports = router;
