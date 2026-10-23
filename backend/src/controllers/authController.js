@@ -4,7 +4,7 @@ const generateToken = require('../utils/generateToken');
 
 exports.studentRegister = async (req, res, next) => {
     try {
-        const { name, email, password, gender, phone } = req.body;
+        const { name, email, password, gender, phone } = req.body || {};
 
         if (!name || !email || !password) {
             return res.status(400).json({ success: false, message: 'Name, email, and password are required' });
@@ -34,7 +34,7 @@ exports.studentRegister = async (req, res, next) => {
 
 exports.studentLogin = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body || {};
 
         if (!email || !password) {
             return res.status(400).json({ success: false, message: 'Email and password are required' });
@@ -71,7 +71,7 @@ exports.studentLogin = async (req, res, next) => {
 
 exports.adminLogin = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body || {};
 
         if (!email || !password) {
             return res.status(400).json({ success: false, message: 'Email and password are required' });
