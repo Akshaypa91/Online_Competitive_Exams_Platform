@@ -1,5 +1,5 @@
 const pool = require('../config/db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 
 exports.studentRegister = async (req, res, next) => {

@@ -2,18 +2,18 @@ USE online_exam_system;
 
 -- Passwords are hashed versions of 'password123'
 -- using bcrypt. Default salt rounds = 10
--- $2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W
+-- $2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG
 
 INSERT INTO admin (name, email, password) VALUES
-('Admin One', 'admin1@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W'),
-('Admin Two', 'admin2@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W');
+('Admin One', 'admin1@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG'),
+('Admin Two', 'admin2@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG');
 
 INSERT INTO student (name, email, password, gender, phone) VALUES
-('Student One', 'student1@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W', 'Male', '1111111111'),
-('Student Two', 'student2@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W', 'Female', '2222222222'),
-('Student Three', 'student3@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W', 'Male', '3333333333'),
-('Student Four', 'student4@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W', 'Female', '4444444444'),
-('Student Five', 'student5@example.com', '$2b$10$wN9iL.vL6yN9x4qYm78iFOrP9c8RXYO/6hQzZz3e0bYhG4tN6y5/W', 'Male', '5555555555');
+('Student One', 'student1@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG', 'Male', '1111111111'),
+('Student Two', 'student2@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG', 'Female', '2222222222'),
+('Student Three', 'student3@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG', 'Male', '3333333333'),
+('Student Four', 'student4@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG', 'Female', '4444444444'),
+('Student Five', 'student5@example.com', '$2a$10$5uzhz.zNA.eTEH.ZnNNv2uCfJlcMR3j3m9j87uwga5zE.5W.w.3ZG', 'Male', '5555555555');
 
 INSERT INTO topic (topic_name, description) VALUES
 ('Data Structures', 'Basic Data Structures and Algorithms'),

@@ -25,6 +25,8 @@ app.use('/api/results', require('./routes/resultRoutes'));
 app.use('/api/ranking', require('./routes/rankingRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 
+const path = require('path');
+
 // Health check endpoint
 app.get('/api/health', async (req, res, next) => {
     try {
@@ -42,6 +44,23 @@ app.get('/api/health', async (req, res, next) => {
             error: error.message
         });
     }
+});
+
+// Serve frontend static assets
+const distPath = path.resolve(__dirname, '../../frontend/dist');
+app.use(express.static(distPath));
+
+// SPA fallback
+app.use((req, res, next) => {
+    if (req.method === 'GET' && !req.path.startsWith('/api')) {
+        const indexPath = path.join(distPath, 'index.html');
+        return res.sendFile(indexPath, (err) => {
+            if (err) {
+                next();
+            }
+        });
+    }
+    next();
 });
 
 // 404 Route

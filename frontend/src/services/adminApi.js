@@ -5,46 +5,51 @@ export const adminApi = {
     const response = await api.get('/admin/dashboard');
     return response.data;
   },
-  
+
   // Topics
   getTopics: async () => {
-    const response = await api.get('/admin/topics');
+    const response = await api.get('/topics');
     return response.data;
   },
   createTopic: async (data) => {
-    const response = await api.post('/admin/topics', data);
+    const response = await api.post('/topics', data);
     return response.data;
   },
   updateTopic: async (id, data) => {
-    const response = await api.put(`/admin/topics/${id}`, data);
+    const response = await api.put(`/topics/${id}`, data);
     return response.data;
   },
   deleteTopic: async (id) => {
-    const response = await api.delete(`/admin/topics/${id}`);
+    const response = await api.delete(`/topics/${id}`);
     return response.data;
   },
 
   // Exams
   getExams: async () => {
-    const response = await api.get('/admin/exams');
+    const response = await api.get('/exams');
     return response.data;
   },
   createExam: async (data) => {
-    const response = await api.post('/admin/exams', data);
+    const response = await api.post('/exams', data);
     return response.data;
   },
   updateExam: async (id, data) => {
-    const response = await api.put(`/admin/exams/${id}`, data);
+    const response = await api.put(`/exams/${id}`, data);
     return response.data;
   },
   deleteExam: async (id) => {
-    const response = await api.delete(`/admin/exams/${id}`);
+    const response = await api.delete(`/exams/${id}`);
     return response.data;
   },
 
   // Students
-  getStudents: async () => {
-    const response = await api.get('/admin/students');
+  getStudents: async (search = '') => {
+    const query = search ? `?search=${encodeURIComponent(search)}` : '';
+    const response = await api.get(`/admin/students${query}`);
+    return response.data;
+  },
+  getStudentById: async (id) => {
+    const response = await api.get(`/admin/students/${id}`);
     return response.data;
   },
 
@@ -58,5 +63,5 @@ export const adminApi = {
   getResults: async () => {
     const response = await api.get('/admin/results');
     return response.data;
-  }
+  },
 };

@@ -7,7 +7,7 @@ exports.getDashboardStats = async (req, res, next) => {
         const [[{ total_questions }]] = await pool.query('SELECT COUNT(*) as total_questions FROM question');
         const [[{ total_topics }]] = await pool.query('SELECT COUNT(*) as total_topics FROM topic');
         const [[{ total_attempts }]] = await pool.query('SELECT COUNT(*) as total_attempts FROM attempt');
-        const [[{ completed_attempts }]] = await pool.query('SELECT COUNT(*) as completed_attempts FROM attempt WHERE status = "SUBMITTED"');
+        const [[{ completed_attempts }]] = await pool.query("SELECT COUNT(*) as completed_attempts FROM attempt WHERE status = 'SUBMITTED'");
 
         res.status(200).json({
             success: true,

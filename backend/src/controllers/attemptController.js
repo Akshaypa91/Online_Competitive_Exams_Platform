@@ -60,3 +60,43 @@ exports.submitExam = async (req, res, next) => {
         connection.release();
     }
 };
+
+exports.getAttemptById = async (req, res, next) => {
+    try {
+        const { attemptId } = req.params;
+        const studentId = req.user.id;
+
+        const [attempts] = await pool.query('SELECT * FROM attempt WHERE attempt_id = ? AND student_id = ?', [attemptId, studentId]);
+        if (attempts.length === 0) {
+            return res.status(404).json({ success: false, message: 'Attempt not found' });
+        }
+        const attempt = attempts[0];
+
+        const [exams] = await pool.query('SELECT * FROM exam WHERE exam_id = ?', [attempt.exam_id]);
+        if (exams.length === 0) {
+            return res.status(404).json({ success: false, message: 'Exam not found' });
+        }
+        const exam = exams[0];
+
+        const [questions] = await pool.query('SELECT question_id, exam_id, question_text, question_type, marks FROM question WHERE exam_id = ?', [exam.exam_id]);
+        for (let q of questions) {
+            const [options] = await pool.query('SELECT option_id, question_id, option_text FROM question_option WHERE question_id = ?', [q.question_id]);
+            q.options = options;
+        }
+        exam.questions = questions;
+
+        const [answers] = await pool.query('SELECT question_id, option_id FROM answer WHERE attempt_id = ?', [attemptId]);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                attempt,
+                exam,
+                answers
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+

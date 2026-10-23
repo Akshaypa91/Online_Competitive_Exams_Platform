@@ -15,7 +15,8 @@ const authMiddleware = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const secret = process.env.JWT_SECRET || 'online-exams-secret-jwt-key-2026';
+        const decoded = jwt.verify(token, secret);
         req.user = decoded;
         next();
     } catch (error) {

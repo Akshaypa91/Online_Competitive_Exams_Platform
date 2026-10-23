@@ -3,7 +3,8 @@ const pool = require('../config/db');
 exports.submitAnswer = async (req, res, next) => {
     try {
         const { attemptId } = req.params;
-        const { question_id, option_id } = req.body;
+        const question_id = req.body.question_id || req.body.questionId;
+        const option_id = req.body.option_id || req.body.selectedOptionId || req.body.optionId;
         const studentId = req.user.id;
 
         if (!question_id || !option_id) {

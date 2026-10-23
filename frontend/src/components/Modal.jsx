@@ -1,23 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { X } from 'lucide-react';
 
-const Modal = ({ isOpen, title, onClose, children }) => {
+const Modal = ({ isOpen, title, onClose, maxWidth = '540px', children }) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <div className="flex justify-between items-center mb-4">
-          <h3 style={{ margin: 0 }}>{title}</h3>
-          <button 
-            onClick={onClose} 
-            style={{ background: 'transparent', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--text-secondary)' }}
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div
+        className="modal-content"
+        style={{ maxWidth }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="modal-header">
+          <h3 id="modal-title" className="modal-title">
+            {title}
+          </h3>
+          <button
+            onClick={onClose}
+            className="modal-close"
+            aria-label="Close dialog"
           >
-            &times;
+            <X size={18} />
           </button>
         </div>
-        <div>
-          {children}
-        </div>
+
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );

@@ -1,43 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Clock, AlertTriangle } from 'lucide-react';
 
 const Timer = ({ initialSeconds, onTimeUp }) => {
   const [timeLeft, setTimeLeft] = useState(initialSeconds);
+  const triggeredRef = useRef(false);
+
+  useEffect(() => {
+    setTimeLeft(initialSeconds);
+    triggeredRef.current = false;
+  }, [initialSeconds]);
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      if (onTimeUp) onTimeUp();
+      if (!triggeredRef.current && onTimeUp) {
+        triggeredRef.current = true;
+        onTimeUp();
+      }
       return;
     }
 
     const intervalId = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalId);
+          if (!triggeredRef.current && onTimeUp) {
+            triggeredRef.current = true;
+            onTimeUp();
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
     }, 1000);
 
     return () => clearInterval(intervalId);
   }, [timeLeft, onTimeUp]);
 
-  const formatTime = (totalSeconds) => {
-    const m = Math.floor(totalSeconds / 60);
-    const s = Math.floor(totalSeconds % 60);
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
+  const hours = Math.floor(timeLeft / 3600);
+  const minutes = Math.floor((timeLeft % 3600) / 60);
+  const seconds = timeLeft % 60;
 
-  const isWarning = timeLeft < 300; // Less than 5 minutes
+  const formattedTime =
+    hours > 0
+      ? `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      : `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+  const isWarning = timeLeft < 300 && timeLeft > 60; // 1-5 mins
+  const isCritical = timeLeft <= 60; // < 1 min
+
+  let bg = 'var(--surface-color)';
+  let color = 'var(--text-primary)';
+  let border = 'var(--border-color)';
+
+  if (isCritical) {
+    bg = 'var(--status-error-bg)';
+    color = 'var(--status-error)';
+    border = 'var(--status-error-border)';
+  } else if (isWarning) {
+    bg = 'var(--status-warning-bg)';
+    color = 'var(--status-warning)';
+    border = 'var(--status-warning-border)';
+  }
 
   return (
-    <div style={{
-      fontSize: '1.25rem',
-      fontWeight: 'bold',
-      padding: '0.5rem 1rem',
-      backgroundColor: isWarning ? 'rgba(239, 68, 68, 0.1)' : 'var(--surface-color)',
-      color: isWarning ? 'var(--danger-color)' : 'var(--text-primary)',
-      borderRadius: 'var(--border-radius-md)',
-      border: `1px solid ${isWarning ? 'var(--danger-color)' : 'var(--border-color)'}`,
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '0.5rem'
-    }}>
-      ⏱ {formatTime(timeLeft)}
+    <div
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        padding: '0.4rem 0.875rem',
+        backgroundColor: bg,
+        color: color,
+        border: `1px solid ${border}`,
+        borderRadius: 'var(--radius-md)',
+        fontSize: '1rem',
+        fontWeight: 700,
+        boxShadow: isCritical ? '0 0 0 2px rgba(220, 38, 38, 0.2)' : 'var(--shadow-xs)',
+        transition: 'all var(--transition-fast)',
+      }}
+      className="font-mono tabular-nums"
+      role="timer"
+      aria-live="polite"
+      aria-label={`Time remaining: ${formattedTime}`}
+    >
+      {isCritical || isWarning ? <AlertTriangle size={17} /> : <Clock size={17} />}
+      <span>{formattedTime}</span>
     </div>
   );
 };
