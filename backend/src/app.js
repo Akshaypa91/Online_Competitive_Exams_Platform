@@ -9,17 +9,32 @@ const app = express();
 
 // Middleware
 app.use(helmet());
+
+// Use an explicit local-development allowlist. Vite may choose a different
+// port (for example 3002) when its configured port is already occupied.
+const allowedOrigins = new Set([
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3001',
+    'http://localhost:3002',
+    'http://127.0.0.1:3002'
+]);
+
 app.use(cors({
-    origin: [
-        'http://localhost:3001',
-        'http://127.0.0.1:3001',
-        'http://localhost:3000',
-        'http://127.0.0.1:3000'
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin(origin, callback) {
+        // Allow requests without Origin (curl, health checks, and server-to-server).
+        if (!origin || allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error(`CORS origin not allowed: ${origin}`));
+    },
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    credentials: true,
+    optionsSuccessStatus: 204
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,7 +64,7 @@ app.get('/api/health', async (req, res, next) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Server is healthy but database is disconnected',
+            message: 'Server is running but database is disconnected',
             database: 'disconnected',
             error: error.message
         });
