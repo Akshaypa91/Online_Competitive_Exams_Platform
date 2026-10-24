@@ -45,7 +45,7 @@ const AdminLogin = () => {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: '#0B1120',
+        backgroundColor: '#F8FAFC',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -56,12 +56,12 @@ const AdminLogin = () => {
         style={{
           width: '100%',
           maxWidth: '440px',
-          backgroundColor: '#0F172A',
+          backgroundColor: '#FFFFFF',
           borderRadius: 'var(--radius-xl)',
-          border: '1px solid #1E293B',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 24px 60px -24px rgba(15, 23, 42, 0.22)',
           padding: '2.5rem 2rem',
-          color: '#FFFFFF',
+          color: '#0F172A',
         }}
       >
         {/* Brand */}
@@ -82,10 +82,10 @@ const AdminLogin = () => {
           >
             <ShieldCheck size={28} />
           </div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FFFFFF' }}>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0F172A' }}>
             Administrator Portal
           </h1>
-          <p style={{ fontSize: '0.875rem', color: '#94A3B8', marginTop: '0.25rem' }}>
+          <p style={{ fontSize: '0.875rem', color: '#64748B', marginTop: '0.25rem' }}>
             Authorized personnel only. Manage exams, topics, and question banks.
           </p>
         </div>
@@ -94,9 +94,9 @@ const AdminLogin = () => {
         <div
           style={{
             padding: '0.625rem 0.875rem',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            backgroundColor: '#FFF7F7',
             borderRadius: 'var(--radius-md)',
-            border: '1px dashed #334155',
+            border: '1px dashed #FECACA',
             marginBottom: '1.5rem',
             display: 'flex',
             alignItems: 'center',
@@ -104,7 +104,7 @@ const AdminLogin = () => {
             fontSize: '0.8125rem',
           }}
         >
-          <div className="flex items-center gap-2" style={{ color: '#94A3B8' }}>
+          <div className="flex items-center gap-2" style={{ color: '#64748B' }}>
             <Sparkles size={15} style={{ color: '#F87171' }} />
             <span>Admin Demo:</span>
           </div>
@@ -126,7 +126,7 @@ const AdminLogin = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label" htmlFor="admin-email" style={{ color: '#E2E8F0' }}>
+            <label className="form-label" htmlFor="admin-email" style={{ color: '#334155' }}>
               Administrator Email
             </label>
             <input
@@ -134,8 +134,8 @@ const AdminLogin = () => {
               type="email"
               className="form-control"
               style={{
-                backgroundColor: '#1E293B',
-                borderColor: '#334155',
+                backgroundColor: '#FFFFFF',
+                borderColor: '#CBD5E1',
                 color: '#FFFFFF',
               }}
               value={email}
@@ -147,7 +147,7 @@ const AdminLogin = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="admin-password" style={{ color: '#E2E8F0' }}>
+            <label className="form-label" htmlFor="admin-password" style={{ color: '#334155' }}>
               Security Password
             </label>
             <div className="input-wrapper">
@@ -156,8 +156,8 @@ const AdminLogin = () => {
                 type={showPassword ? 'text' : 'password'}
                 className="form-control input-with-right-icon"
                 style={{
-                  backgroundColor: '#1E293B',
-                  borderColor: '#334155',
+                  backgroundColor: '#FFFFFF',
+                  borderColor: '#CBD5E1',
                   color: '#FFFFFF',
                 }}
                 value={password}
@@ -170,7 +170,7 @@ const AdminLogin = () => {
                 type="button"
                 className="input-icon-right"
                 onClick={() => setShowPassword(!showPassword)}
-                style={{ color: '#94A3B8' }}
+                style={{ color: '#64748B' }}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -195,10 +195,10 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #1E293B', textAlign: 'center', fontSize: '0.875rem' }}>
+        <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #E2E8F0', textAlign: 'center', fontSize: '0.875rem' }}>
           <Link
             to="/login"
-            style={{ color: '#94A3B8', fontSize: '0.8125rem' }}
+            style={{ color: '#64748B', fontSize: '0.8125rem' }}
           >
             ← Return to Candidate Login
           </Link>
