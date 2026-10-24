@@ -10,21 +10,27 @@ const app = express();
 // Middleware
 app.use(helmet());
 
-// Use an explicit local-development allowlist. Vite may choose a different
-// port (for example 3002) when its configured port is already occupied.
+// Explicit origins for known local ports, plus any localhost port in
+// non-production mode because Vite automatically selects the next free port.
 const allowedOrigins = new Set([
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'http://localhost:3001',
     'http://127.0.0.1:3001',
     'http://localhost:3002',
-    'http://127.0.0.1:3002'
-]);
+    'http://127.0.0.1:3002',
+    process.env.FRONTEND_ORIGIN
+].filter(Boolean));
 
 app.use(cors({
     origin(origin, callback) {
-        // Allow requests without Origin (curl, health checks, and server-to-server).
-        if (!origin || allowedOrigins.has(origin)) {
+        const isLocalDevelopmentOrigin =
+            process.env.NODE_ENV !== 'production' &&
+            typeof origin === 'string' &&
+            /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
+        // Allow non-browser requests, explicit origins, and local dev origins.
+        if (!origin || allowedOrigins.has(origin) || isLocalDevelopmentOrigin) {
             return callback(null, true);
         }
         return callback(new Error(`CORS origin not allowed: ${origin}`));
