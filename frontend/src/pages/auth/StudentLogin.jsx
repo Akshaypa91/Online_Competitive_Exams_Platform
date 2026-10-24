@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from '../../services/authApi';
 import { useAuth } from '../../hooks/useAuth';
 import ErrorMessage from '../../components/ErrorMessage';
-import { GraduationCap, Eye, EyeOff, LogIn, Sparkles, CheckCircle2 } from 'lucide-react';
+import { GraduationCap, Eye, EyeOff, LogIn, Sparkles, Mail, X } from 'lucide-react';
 
 const StudentLogin = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +11,8 @@ const StudentLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -151,6 +153,16 @@ const StudentLogin = () => {
               <label className="form-label" htmlFor="student-password" style={{ margin: 0 }}>
                 Password
               </label>
+              <button
+                type="button"
+                onClick={() => {
+                  setResetEmail(email);
+                  setShowForgotPassword(true);
+                }}
+                style={{ color: 'var(--primary-color)', fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.375rem' }}
+              >
+                Forgot password?
+              </button>
             </div>
             <div className="input-wrapper">
               <input
@@ -208,6 +220,73 @@ const StudentLogin = () => {
           </p>
         </div>
       </div>
+
+      {showForgotPassword && (
+        <div
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setShowForgotPassword(false);
+          }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 100, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', padding: '1.25rem',
+            background: 'rgba(15, 23, 42, 0.42)', backdropFilter: 'blur(4px)',
+          }}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="forgot-password-title"
+            style={{
+              position: 'relative', width: '100%', maxWidth: 420, padding: '2rem',
+              borderRadius: 'var(--radius-xl)', border: '1px solid var(--border-color)',
+              background: 'var(--surface-color)', boxShadow: 'var(--shadow-xl)',
+            }}
+          >
+            <button
+              type="button"
+              aria-label="Close forgot password dialog"
+              onClick={() => setShowForgotPassword(false)}
+              style={{ position: 'absolute', top: 16, right: 16, color: 'var(--text-secondary)' }}
+            >
+              <X size={20} />
+            </button>
+            <div style={{
+              width: 48, height: 48, display: 'flex', alignItems: 'center',
+              justifyContent: 'center', borderRadius: 'var(--radius-lg)',
+              background: 'var(--primary-light)', color: 'var(--primary-color)',
+              marginBottom: '1rem',
+            }}>
+              <Mail size={23} />
+            </div>
+            <h2 id="forgot-password-title" style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>
+              Forgot your password?
+            </h2>
+            <p style={{ fontSize: '0.875rem', marginBottom: '1.25rem' }}>
+              Enter your registered email to get help recovering your account.
+            </p>
+            <form onSubmit={(event) => {
+              event.preventDefault();
+              setShowForgotPassword(false);
+              setError('Password reset is not configured yet. Please contact your examination administrator for help.');
+            }}>
+              <label className="form-label" htmlFor="reset-email">Registered email address</label>
+              <input
+                id="reset-email" type="email" className="form-control"
+                value={resetEmail} onChange={(event) => setResetEmail(event.target.value)}
+                placeholder="candidate@example.com" autoComplete="email" required autoFocus
+              />
+              <button type="submit" className="btn btn-primary btn-lg w-full mt-4">Continue</button>
+            </form>
+            <button
+              type="button" onClick={() => setShowForgotPassword(false)}
+              style={{ width: '100%', marginTop: '1rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}
+            >
+              Back to sign in
+            </button>
+          </section>
+        </div>
+      )}
     </div>
   );
 };
