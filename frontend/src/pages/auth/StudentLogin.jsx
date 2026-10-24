@@ -13,6 +13,9 @@ const StudentLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState('');
+  const [resetMessage, setResetMessage] = useState('');
 
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -157,6 +160,8 @@ const StudentLogin = () => {
                 type="button"
                 onClick={() => {
                   setResetEmail(email);
+                  setResetError('');
+                  setResetMessage('');
                   setShowForgotPassword(true);
                 }}
                 style={{ color: 'var(--primary-color)', fontSize: '0.8125rem', fontWeight: 600, marginBottom: '0.375rem' }}
@@ -265,10 +270,17 @@ const StudentLogin = () => {
             <p style={{ fontSize: '0.875rem', marginBottom: '1.25rem' }}>
               Enter your registered email to get help recovering your account.
             </p>
+            {resetError && <div role="alert" style={{ marginBottom: '1rem', padding: '.75rem', borderRadius: 'var(--radius-md)', background: '#FEF2F2', border: '1px solid #FECACA', color: '#B91C1C', fontSize: '.875rem' }}>{resetError}</div>}
+            {resetMessage && <div role="status" style={{ marginBottom: '1rem', padding: '.75rem', borderRadius: 'var(--radius-md)', background: '#F0FDF4', border: '1px solid #BBF7D0', color: '#166534', fontSize: '.875rem' }}>{resetMessage}</div>}
             <form onSubmit={(event) => {
               event.preventDefault();
-              setShowForgotPassword(false);
-              setError('Password reset is not configured yet. Please contact your examination administrator for help.');
+              setResetError('');
+              setResetMessage('');
+              setResetLoading(true);
+              authApi.requestStudentPasswordReset(resetEmail)
+                .then((response) => setResetMessage(response.message || 'If an account exists for that email, a reset link will be sent shortly.'))
+                .catch((err) => setResetError(err.response?.data?.message || 'Unable to send the reset email. Please try again later.'))
+                .finally(() => setResetLoading(false));
             }}>
               <label className="form-label" htmlFor="reset-email">Registered email address</label>
               <input
@@ -276,7 +288,7 @@ const StudentLogin = () => {
                 value={resetEmail} onChange={(event) => setResetEmail(event.target.value)}
                 placeholder="candidate@example.com" autoComplete="email" required autoFocus
               />
-              <button type="submit" className="btn btn-primary btn-lg w-full mt-4">Continue</button>
+              <button type="submit" className="btn btn-primary btn-lg w-full mt-4" disabled={resetLoading}>{resetLoading ? 'Sending reset link...' : 'Send reset link'}</button>
             </form>
             <button
               type="button" onClick={() => setShowForgotPassword(false)}
