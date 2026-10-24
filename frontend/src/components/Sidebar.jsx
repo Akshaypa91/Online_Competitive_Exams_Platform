@@ -92,7 +92,7 @@ const Sidebar = ({ isAdmin, isOpen, onClose }) => {
           <button
             onClick={onClose}
             style={{
-              color: '#94A3B8',
+              color: 'var(--text-secondary)',
               padding: '0.25rem',
               display: window.innerWidth > 768 ? 'none' : 'flex',
             }}
@@ -134,7 +134,7 @@ const Sidebar = ({ isAdmin, isOpen, onClose }) => {
           <button
             onClick={handleLogout}
             style={{
-              color: '#94A3B8',
+              color: 'var(--text-secondary)',
               padding: '0.5rem',
               borderRadius: 'var(--radius-sm)',
               display: 'flex',
