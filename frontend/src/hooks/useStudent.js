@@ -15,7 +15,15 @@ const useStudent = () => {
 
   // GET /api/student/exams — list exams the student can take
   const getAvailableExams = useCallback(async () => {
-    const data = await request('/student/exams');
+    const response = await request('/student/exams');
+    // The backend returns { success: true, data: [...] } for list endpoints.
+    const data = Array.isArray(response)
+      ? response
+      : Array.isArray(response?.data)
+        ? response.data
+        : Array.isArray(response?.exams)
+          ? response.exams
+          : [];
     setAvailableExams(data);
     return data;
   }, [request]);

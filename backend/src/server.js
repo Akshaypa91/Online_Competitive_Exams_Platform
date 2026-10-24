@@ -1,8 +1,19 @@
+require('dotenv').config();
 const app = require('./app');
 
-const PORT = process.env.PORT || 5000;
+// Keep this aligned with frontend/vite.config.js proxy target.
+const PORT = Number(process.env.PORT) || 3000;
 const HOST = '0.0.0.0';
 
-app.listen(PORT, HOST, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+const server = app.listen(PORT, HOST, () => {
+    console.log(`Backend running on http://localhost:${PORT}`);
+});
+
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Stop the other process or set PORT to an available port and update the Vite proxy target.`);
+    } else {
+        console.error('Failed to start backend:', error);
+    }
+    process.exitCode = 1;
 });

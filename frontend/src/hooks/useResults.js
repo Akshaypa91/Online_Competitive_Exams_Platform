@@ -17,7 +17,16 @@ const useResults = () => {
 
   // GET /api/results/my-results
   const getMyResults = useCallback(async () => {
-    const data = await request('/results/my-results');
+    const response = await request('/results/my-results');
+    // API list endpoints return { success: true, data: [...] }.
+    // Normalize the envelope so consumers always receive an array.
+    const data = Array.isArray(response)
+      ? response
+      : Array.isArray(response?.data)
+        ? response.data
+        : Array.isArray(response?.results)
+          ? response.results
+          : [];
     setMyResults(data);
     return data;
   }, [request]);
@@ -31,7 +40,14 @@ const useResults = () => {
 
   // GET /api/results/exam/:examId  (admin only)
   const getResultsByExam = useCallback(async (examId) => {
-    const data = await request(`/results/exam/${examId}`);
+    const response = await request(`/results/exam/${examId}`);
+    const data = Array.isArray(response)
+      ? response
+      : Array.isArray(response?.data)
+        ? response.data
+        : Array.isArray(response?.results)
+          ? response.results
+          : [];
     setExamResults(data);
     return data;
   }, [request]);

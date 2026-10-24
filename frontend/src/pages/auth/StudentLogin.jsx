@@ -35,7 +35,13 @@ const StudentLogin = () => {
       login(response.user, response.token);
       navigate('/student/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
+      if (err.code === 'ECONNABORTED') {
+        setError('The server took too long to respond. Check that the backend is running, then try again.');
+      } else if (!err.response && err.message === 'Network Error') {
+        setError('Could not reach the server. Check that the backend is running and try again.');
+      } else {
+        setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

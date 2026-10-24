@@ -48,7 +48,7 @@ const StudentRegister = () => {
     try {
       setIsLoading(true);
       setError(null);
-      await authApi.registerStudent({
+      const response = await authApi.registerStudent({
         name: name.trim(),
         email: email.trim(),
         password,
@@ -56,12 +56,22 @@ const StudentRegister = () => {
         gender,
       });
 
+      if (response?.success === false) {
+        throw new Error(response.message || 'Registration could not be completed.');
+      }
+
       setSuccessMsg('Account created successfully! Redirecting to login...');
       setTimeout(() => {
         navigate('/login');
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please check your details and try again.');
+      if (err.code === 'ECONNABORTED') {
+        setError('The server took too long to respond. Check that the backend is running, then try again.');
+      } else if (!err.response && err.message === 'Network Error') {
+        setError('Could not reach the server. Check that the backend is running and try again.');
+      } else {
+        setError(err.response?.data?.message || err.message || 'Registration failed. Please check your details and try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -151,6 +161,7 @@ const StudentRegister = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="e.g. Alex Johnson"
+              autoComplete="name"
               required
             />
           </div>
@@ -167,6 +178,7 @@ const StudentRegister = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="alex@example.com"
+              autoComplete="email"
               required
             />
           </div>
@@ -185,6 +197,7 @@ const StudentRegister = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Min 6 chars"
+                  autoComplete="new-password"
                   required
                 />
                 <button
@@ -211,6 +224,7 @@ const StudentRegister = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="Repeat password"
+                autoComplete="new-password"
                 required
               />
             </div>
@@ -247,6 +261,7 @@ const StudentRegister = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="e.g. 9876543210"
+                autoComplete="tel"
                 required
               />
             </div>
