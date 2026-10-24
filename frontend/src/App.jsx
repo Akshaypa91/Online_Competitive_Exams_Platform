@@ -6,6 +6,7 @@ import { ToastProvider } from './context/ToastContext';
 // Auth Pages
 import StudentLogin from './pages/auth/StudentLogin';
 import StudentRegister from './pages/auth/StudentRegister';
+import ResetPassword from './pages/auth/ResetPassword';
 import AdminLogin from './pages/auth/AdminLogin';
 
 // Student Pages
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<StudentLogin />} />
             <Route path="/register" element={<StudentRegister />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/admin/login" element={<AdminLogin />} />
 
             {/* Student Protected Routes */}
