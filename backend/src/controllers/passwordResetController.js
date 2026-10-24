@@ -24,9 +24,8 @@ function createMailer() {
 async function ensureResetTable() {
     await pool.query(`
         CREATE TABLE IF NOT EXISTS password_reset_tokens (
-            id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            token_hash VARCHAR(64) PRIMARY KEY,
             student_id INTEGER NOT NULL,
-            token_hash VARCHAR(64) NOT NULL UNIQUE,
             expires_at BIGINT NOT NULL,
             used_at BIGINT NULL,
             created_at BIGINT NOT NULL
@@ -101,7 +100,7 @@ exports.resetStudentPassword = async (req, res, next) => {
 
         await ensureResetTable();
         const [tokens] = await pool.query(
-            'SELECT id, student_id, expires_at, used_at FROM password_reset_tokens WHERE token_hash = ?',
+            'SELECT token_hash, student_id, expires_at, used_at FROM password_reset_tokens WHERE token_hash = ?',
             [hashToken(token)]
         );
         const reset = tokens[0];
@@ -115,8 +114,8 @@ exports.resetStudentPassword = async (req, res, next) => {
         try {
             await connection.beginTransaction();
             const [freshRows] = await connection.query(
-                'SELECT id, student_id, expires_at, used_at FROM password_reset_tokens WHERE id = ?',
-                [reset.id]
+                'SELECT token_hash, student_id, expires_at, used_at FROM password_reset_tokens WHERE token_hash = ?',
+                [reset.token_hash]
             );
             const fresh = freshRows[0];
             if (!fresh || fresh.used_at !== null && fresh.used_at !== undefined || Number(fresh?.expires_at) <= now) {
@@ -124,10 +123,10 @@ exports.resetStudentPassword = async (req, res, next) => {
                 return res.status(400).json({ success: false, message: 'This reset link has already been used or has expired.' });
             }
             await connection.query('UPDATE student SET password = ? WHERE student_id = ?', [hashedPassword, fresh.student_id]);
-            await connection.query('UPDATE password_reset_tokens SET used_at = ? WHERE id = ?', [now, fresh.id]);
+            await connection.query('UPDATE password_reset_tokens SET used_at = ? WHERE token_hash = ?', [now, fresh.token_hash]);
             await connection.query(
-                'UPDATE password_reset_tokens SET used_at = ? WHERE student_id = ? AND id <> ? AND used_at IS NULL',
-                [now, fresh.student_id, fresh.id]
+                'UPDATE password_reset_tokens SET used_at = ? WHERE student_id = ? AND token_hash <> ? AND used_at IS NULL',
+                [now, fresh.student_id, fresh.token_hash]
             );
             await connection.commit();
         } catch (error) {
