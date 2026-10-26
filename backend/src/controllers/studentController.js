@@ -10,8 +10,8 @@ exports.getAvailableExams = async (req, res, next) => {
             SELECT e.* 
             FROM exam e
             LEFT JOIN attempt a ON e.exam_id = a.exam_id AND a.student_id = ?
-            WHERE datetime(NOW()) >= datetime(e.start_time) 
-              AND datetime(NOW()) <= datetime(e.end_time)
+            WHERE CURRENT_TIMESTAMP >= e.start_time
+              AND CURRENT_TIMESTAMP <= e.end_time
               AND a.attempt_id IS NULL
         `;
         
