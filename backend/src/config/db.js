@@ -33,7 +33,9 @@ if (!pool) {
     const sqliteDb = new DatabaseSync(':memory:');
 
     // Register NOW() function
-    sqliteDb.function('NOW', () => new Date().toISOString().slice(0, 19).replace('T', ' '));
+    // Keep NOW() in ISO-like format so it compares correctly with ISO timestamps
+    // sent by the frontend (new Date(...).toISOString()).
+    sqliteDb.function('NOW', () => new Date().toISOString().slice(0, 19));
 
     // Create tables
     sqliteDb.exec(`
