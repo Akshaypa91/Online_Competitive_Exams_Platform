@@ -57,7 +57,7 @@ const ManageQuestions = () => {
   const [questionToDelete, setQuestionToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const { addToast } = useToast();
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchExams();
@@ -138,7 +138,7 @@ const ManageQuestions = () => {
 
   const handleRemoveOption = (index) => {
     if (formData.options.length <= 2) {
-      addToast('A multiple-choice question must have at least 2 options.', 'warning');
+      showToast('warning', 'A multiple-choice question must have at least 2 options.');
       return;
     }
     const wasCorrect = formData.options[index].is_correct;
@@ -199,17 +199,17 @@ const ManageQuestions = () => {
     try {
       if (formData.question_id) {
         await questionApi.updateQuestion(selectedExamId, formData.question_id, payload);
-        addToast('Question updated successfully.', 'success');
+        showToast('success', 'Question updated successfully.');
       } else {
         await questionApi.createQuestion(selectedExamId, payload);
-        addToast('New question added to exam bank.', 'success');
+        showToast('success', 'New question added to exam bank.');
       }
       setIsModalOpen(false);
       fetchQuestions(selectedExamId);
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to save question.';
       setError(msg);
-      addToast(msg, 'error');
+      showToast('error', msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -221,13 +221,13 @@ const ManageQuestions = () => {
     try {
       const qId = questionToDelete.question_id || questionToDelete.id;
       await questionApi.deleteQuestion(selectedExamId, qId);
-      addToast('Question removed from exam bank.', 'success');
+      showToast('success', 'Question removed from exam bank.');
       setQuestionToDelete(null);
       fetchQuestions(selectedExamId);
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to delete question.';
       setError(msg);
-      addToast(msg, 'error');
+      showToast('error', msg);
     } finally {
       setIsDeleting(false);
     }
