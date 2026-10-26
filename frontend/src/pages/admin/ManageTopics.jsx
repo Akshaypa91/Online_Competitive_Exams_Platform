@@ -83,17 +83,17 @@ const ManageTopics = () => {
     try {
       if (formData.topic_id) {
         await adminApi.updateTopic(formData.topic_id, payload);
-        addToast('Subject topic updated successfully.', 'success');
+        showToast('success', 'Subject topic updated successfully.');
       } else {
         await adminApi.createTopic(payload);
-        addToast('New topic created successfully.', 'success');
+        showToast('success', 'New topic created successfully.');
       }
       setIsModalOpen(false);
       fetchTopics();
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to save subject topic.';
       setError(msg);
-      addToast(msg, 'error');
+      showToast('error', msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -105,13 +105,13 @@ const ManageTopics = () => {
     try {
       const id = topicToDelete.topic_id || topicToDelete.id;
       await adminApi.deleteTopic(id);
-      addToast('Topic deleted successfully.', 'success');
+      showToast('success', 'Topic deleted successfully.');
       setTopicToDelete(null);
       fetchTopics();
     } catch (err) {
       const msg = err.response?.data?.message || 'Cannot delete topic. Ensure no active exams are linked.';
       setError(msg);
-      addToast(msg, 'error');
+      showToast('error', msg);
     } finally {
       setIsDeleting(false);
     }
