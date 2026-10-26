@@ -61,7 +61,7 @@ const ManageExams = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const navigate = useNavigate();
-  const { addToast } = useToast();
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchData();

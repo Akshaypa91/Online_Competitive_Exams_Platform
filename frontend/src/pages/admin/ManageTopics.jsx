@@ -32,7 +32,7 @@ const ManageTopics = () => {
   const [topicToDelete, setTopicToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const { addToast } = useToast();
+  const { showToast } = useToast();
 
   useEffect(() => {
     fetchTopics();
