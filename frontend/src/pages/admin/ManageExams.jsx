@@ -141,17 +141,17 @@ const ManageExams = () => {
     try {
       if (formData.exam_id) {
         await adminApi.updateExam(formData.exam_id, payload);
-        addToast('Examination updated successfully.', 'success');
+        showToast('success', 'Examination updated successfully.');
       } else {
         await adminApi.createExam(payload);
-        addToast('New examination created successfully.', 'success');
+        showToast('success', 'New examination created successfully.');
       }
       setIsModalOpen(false);
       fetchData();
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to save examination.';
       setError(msg);
-      addToast(msg, 'error');
+      showToast('error', msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -163,13 +163,13 @@ const ManageExams = () => {
     try {
       const id = examToDelete.exam_id || examToDelete.id;
       await adminApi.deleteExam(id);
-      addToast('Examination removed successfully.', 'success');
+      showToast('success', 'Examination removed successfully.');
       setExamToDelete(null);
       fetchData();
     } catch (err) {
       const msg = err.response?.data?.message || 'Failed to delete examination.';
       setError(msg);
-      addToast(msg, 'error');
+      showToast('error', msg);
     } finally {
       setIsDeleting(false);
     }
