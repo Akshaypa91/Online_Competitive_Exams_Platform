@@ -1,5 +1,16 @@
 const pool = require('../config/db');
 
+// MySQL DATETIME does not accept ISO-8601 timezone suffixes such as ".000Z".
+// The frontend sends ISO dates, so normalize them at the API boundary.
+const toMySqlDateTime = (value) => {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return null;
+    }
+
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+};
+
 exports.createExam = async (req, res, next) => {
     try {
         const { topic_id, exam_name, description, duration, total_marks, start_time, end_time } = req.body;
@@ -9,10 +20,29 @@ exports.createExam = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'All required fields must be provided' });
         }
 
+        const mysqlStartTime = toMySqlDateTime(start_time);
+        const mysqlEndTime = toMySqlDateTime(end_time);
+
+        if (!mysqlStartTime || !mysqlEndTime) {
+            return res.status(400).json({ success: false, message: 'Start time and end time must be valid dates' });
+        }
+
         const [result] = await pool.query(
             'INSERT INTO exam (admin_id, topic_id, exam_name, description, duration, total_marks, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [admin_id, topic_id, exam_name, description || null, duration, total_marks, start_time, end_time]
+            [admin_id, topic_id, exam_name, description || null, duration, total_marks, mysqlStartTime, mysqlEndTime]
         );
+
+        console.info('[Exam created]', {
+            exam_id: result.insertId,
+            admin_id,
+            topic_id,
+            exam_name,
+            description: description || null,
+            duration,
+            total_marks,
+            start_time: mysqlStartTime,
+            end_time: mysqlEndTime
+        });
 
         res.status(201).json({
             success: true,
@@ -92,9 +122,16 @@ exports.updateExam = async (req, res, next) => {
         const { id } = req.params;
         const { topic_id, exam_name, description, duration, total_marks, start_time, end_time } = req.body;
 
+        const mysqlStartTime = toMySqlDateTime(start_time);
+        const mysqlEndTime = toMySqlDateTime(end_time);
+
+        if (!mysqlStartTime || !mysqlEndTime) {
+            return res.status(400).json({ success: false, message: 'Start time and end time must be valid dates' });
+        }
+
         const [result] = await pool.query(
             'UPDATE exam SET topic_id = ?, exam_name = ?, description = ?, duration = ?, total_marks = ?, start_time = ?, end_time = ? WHERE exam_id = ?',
-            [topic_id, exam_name, description, duration, total_marks, start_time, end_time, id]
+            [topic_id, exam_name, description, duration, total_marks, mysqlStartTime, mysqlEndTime, id]
         );
 
         if (result.affectedRows === 0) {

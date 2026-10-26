@@ -36,6 +36,15 @@ exports.createQuestion = async (req, res, next) => {
 
         await connection.commit();
 
+        console.info('[Question created]', {
+            question_id,
+            exam_id,
+            question_text,
+            question_type: question_type || 'MCQ',
+            marks,
+            option_count: options.length
+        });
+
         res.status(201).json({
             success: true,
             message: 'Question created successfully',

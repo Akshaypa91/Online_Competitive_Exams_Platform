@@ -13,6 +13,12 @@ exports.createTopic = async (req, res, next) => {
             [topic_name, description || null]
         );
 
+        console.info('[Topic created]', {
+            topic_id: result.insertId,
+            topic_name,
+            description: description || null
+        });
+
         res.status(201).json({
             success: true,
             message: 'Topic created successfully',

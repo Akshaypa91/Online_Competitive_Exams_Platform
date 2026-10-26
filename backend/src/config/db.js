@@ -5,10 +5,11 @@ require('dotenv').config();
 
 let pool;
 
-// Check if MySQL connection environment is explicitly configured and not default unconfigured
-const hasRemoteMySQL = process.env.DB_HOST && process.env.DB_HOST !== 'localhost' && process.env.DB_HOST !== '127.0.0.1';
+// Use MySQL whenever database connection details are configured. Local MySQL
+// (localhost/127.0.0.1) is a valid persistent development database too.
+const hasMySQLConfig = Boolean(process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER);
 
-if (hasRemoteMySQL) {
+if (hasMySQLConfig) {
     try {
         pool = mysql.createPool({
             host: process.env.DB_HOST,
