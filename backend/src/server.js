@@ -1,8 +1,8 @@
 require('dotenv').config();
 const app = require('./app');
 
-// Keep this aligned with frontend/vite.config.js proxy target.
-const PORT = Number(process.env.PORT) || 3000;
+// Keep this aligned with frontend/vite.config.js proxy target (default 5001).
+const PORT = Number(process.env.PORT) || 5001;
 const HOST = '0.0.0.0';
 
 const server = app.listen(PORT, HOST, () => {
