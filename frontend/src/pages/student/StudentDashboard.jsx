@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Sparkles,
   Trophy,
+  BarChart3
 } from 'lucide-react';
 
 const StudentDashboard = () => {
@@ -107,13 +108,26 @@ const StudentDashboard = () => {
             <span>Explore Exams</span>
             <ArrowRight size={16} />
           </button>
+          <button
+            className="btn btn-outline"
+            style={{
+              borderColor: 'rgba(255, 255, 255, 0.4)',
+              color: '#FFFFFF',
+              fontWeight: 600,
+              background: 'rgba(255, 255, 255, 0.1)',
+            }}
+            onClick={() => navigate('/student/analytics')}
+          >
+            <BarChart3 size={16} />
+            <span>Cohort Analytics</span>
+          </button>
         </div>
       </div>
 
       <ErrorMessage message={error} />
 
       {/* Metric Cards Grid */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-4 gap-4 mb-6">
         <StatCard
           title="Available Exams"
           value={examsList.length}
@@ -145,6 +159,61 @@ const StudentDashboard = () => {
           icon={Award}
           color="primary"
         />
+      </div>
+
+      {/* Visual Analytics Spotlight Card */}
+      <div
+        className="card mb-8"
+        style={{
+          background: 'linear-gradient(135deg, #EEF2FF 0%, #FFFFFF 100%)',
+          border: '1px solid #C7D2FE',
+          padding: '1.25rem 1.5rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          borderRadius: '1rem',
+          boxShadow: 'var(--shadow-sm)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: '0.75rem',
+              backgroundColor: 'var(--primary-color)',
+              color: '#FFFFFF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}
+          >
+            <BarChart3 size={24} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <h4 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                Competitive Cohort Analytics & Percentile Visualizations
+              </h4>
+              <span className="badge badge-info" style={{ fontSize: '0.7rem' }}>Dataset Feature</span>
+            </div>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0 0' }}>
+              Explore multi-variate score distributions, test prep deltas, and calculate your percentile standing among 1,000 candidates.
+            </p>
+          </div>
+        </div>
+
+        <button
+          className="btn btn-primary"
+          onClick={() => navigate('/student/analytics')}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+        >
+          <span>Open Analytics Studio</span>
+          <ArrowRight size={16} />
+        </button>
       </div>
 
       {/* Main Content Sections: Available Exams & Recent Activity */}

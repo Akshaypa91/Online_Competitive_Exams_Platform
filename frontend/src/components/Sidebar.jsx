@@ -13,7 +13,9 @@ import {
   GraduationCap,
   ShieldCheck,
   ChevronRight,
-  X
+  X,
+  BarChart3,
+  TrendingUp
 } from 'lucide-react';
 
 const Sidebar = ({ isAdmin, isOpen, onClose }) => {
@@ -27,6 +29,7 @@ const Sidebar = ({ isAdmin, isOpen, onClose }) => {
 
   const adminLinks = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Visual Analytics', path: '/admin/analytics', icon: BarChart3 },
     { name: 'Students', path: '/admin/students', icon: Users },
     { name: 'Topics', path: '/admin/topics', icon: BookOpen },
     { name: 'Exams', path: '/admin/exams', icon: FileText },
@@ -37,6 +40,7 @@ const Sidebar = ({ isAdmin, isOpen, onClose }) => {
 
   const studentLinks = [
     { name: 'Dashboard', path: '/student/dashboard', icon: LayoutDashboard },
+    { name: 'Performance Analytics', path: '/student/analytics', icon: TrendingUp },
     { name: 'Available Exams', path: '/student/exams', icon: FileText },
     { name: 'My Results', path: '/student/results', icon: Award },
   ];

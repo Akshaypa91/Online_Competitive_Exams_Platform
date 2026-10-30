@@ -10,6 +10,7 @@ import AdminLogin from './pages/auth/AdminLogin';
 
 // Student Pages
 import StudentDashboard from './pages/student/StudentDashboard';
+import StudentAnalytics from './pages/student/StudentAnalytics';
 import AvailableExams from './pages/student/AvailableExams';
 import ExamDetails from './pages/student/ExamDetails';
 import ExamPage from './pages/student/ExamPage';
@@ -19,6 +20,7 @@ import Ranking from './pages/student/Ranking';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
 import ManageStudents from './pages/admin/ManageStudents';
 import ManageTopics from './pages/admin/ManageTopics';
 import ManageExams from './pages/admin/ManageExams';
@@ -45,6 +47,7 @@ const App = () => {
             {/* Student Protected Routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="/student/dashboard" element={<StudentDashboard />} />
+              <Route path="/student/analytics" element={<StudentAnalytics />} />
               <Route path="/student/exams" element={<AvailableExams />} />
               <Route path="/student/exams/:id" element={<ExamDetails />} />
               <Route path="/student/exam/:attemptId" element={<ExamPage />} />
@@ -56,6 +59,7 @@ const App = () => {
             {/* Admin Protected Routes */}
             <Route element={<AdminRoute />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/students" element={<ManageStudents />} />
               <Route path="/admin/topics" element={<ManageTopics />} />
               <Route path="/admin/exams" element={<ManageExams />} />
