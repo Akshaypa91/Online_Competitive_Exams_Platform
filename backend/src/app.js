@@ -55,6 +55,7 @@ app.use('/api/student/attempts', require('./routes/answerRoutes'));
 app.use('/api/results', require('./routes/resultRoutes'));
 app.use('/api/ranking', require('./routes/rankingRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/analytics', require('./routes/analyticsRoutes'));
 
 const path = require('path');
 

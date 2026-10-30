@@ -8,7 +8,10 @@ import {
   ClipboardCheck, 
   CheckCircle2, 
   PlusCircle, 
-  ArrowRight
+  ArrowRight,
+  BarChart3,
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
 import { adminApi } from '../../services/adminApi';
 import AppLayout from '../../components/AppLayout';
@@ -126,6 +129,67 @@ const AdminDashboard = () => {
             />
           </div>
 
+          {/* Visual Performance Analytics Spotlight Card */}
+          <div
+            className="card"
+            style={{
+              background: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 100%)',
+              color: '#FFFFFF',
+              padding: '1.5rem 1.75rem',
+              borderRadius: '1rem',
+              marginBottom: '1.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1.25rem',
+              boxShadow: 'var(--shadow-md)'
+            }}
+          >
+            <div style={{ maxWidth: '640px' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.25rem 0.65rem',
+                  borderRadius: '2rem',
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  marginBottom: '0.625rem'
+                }}
+              >
+                <Sparkles size={14} />
+                <span>Dataset Performance Visualization Engine</span>
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 0.35rem 0', color: '#FFFFFF' }}>
+                Multi-Variate Cohort Visual Analytics Studio
+              </h3>
+              <p style={{ fontSize: '0.8125rem', color: '#C7D2FE', margin: 0, lineHeight: 1.5 }}>
+                Analyze 1,000 student candidate records from <strong>StudentsPerformance_Clean.csv</strong> with histograms, normal distribution curves, five-number box plots, 5-axis competency radars, and equity cross-tabulations.
+              </p>
+            </div>
+
+            <button
+              className="btn"
+              onClick={() => navigate('/admin/analytics')}
+              style={{
+                backgroundColor: '#FFFFFF',
+                color: '#312E81',
+                fontWeight: 700,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.15)'
+              }}
+            >
+              <BarChart3 size={18} />
+              <span>Launch Visual Studio</span>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+
           {/* Quick Action Bar */}
           <div className="card" style={{ padding: '1.25rem 1.5rem', marginBottom: '1.75rem' }}>
             <h3 style={{ fontSize: '1rem', marginBottom: '1rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -139,6 +203,14 @@ const AdminDashboard = () => {
               >
                 <PlusCircle size={16} />
                 <span>Create New Exam</span>
+              </button>
+              <button
+                className="btn btn-outline"
+                onClick={() => navigate('/admin/analytics')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', borderColor: 'var(--primary-color)', color: 'var(--primary-color)' }}
+              >
+                <BarChart3 size={16} />
+                <span>Visual Analytics Studio</span>
               </button>
               <button
                 className="btn btn-outline"
